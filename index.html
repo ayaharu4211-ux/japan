@@ -1,0 +1,460 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kosakata Jepang Sehari-hari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* Layout: sticky search + category rail, then a dense single-column word list (phone-first) */
+:root{
+  --bg:#F6F3F2; --surface:#FFFFFF; --ink:#231A1C; --muted:#6B5F61; --line:#E4DCDB;
+  --accent:#B23A48; --accent-soft:#F6E1E3; --kunyit:#0E6A57; --kunyit-soft:#DDEFE9;
+  --display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body:"Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#171213; --surface:#211A1B; --ink:#EFE7E8; --muted:#A8999B; --line:#352B2D;
+  --accent:#F07A86; --accent-soft:#3E2227; --kunyit:#4FC2A6; --kunyit-soft:#183A32; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171213; --surface:#211A1B; --ink:#EFE7E8; --muted:#A8999B; --line:#352B2D;
+  --accent:#F07A86; --accent-soft:#3E2227; --kunyit:#4FC2A6; --kunyit-soft:#183A32; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+header h1{font-family:var(--display);font-size:1.7rem;line-height:1.15;margin:0;text-wrap:balance;letter-spacing:-.01em}
+header h1 span{color:var(--accent);font-family:var(--body);font-weight:700}
+header p{margin:.35rem 0 0;color:var(--muted);font-size:.85rem}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 10px;display:grid;gap:10px;border-bottom:1px solid var(--line)}
+.row{display:flex;gap:8px;align-items:center}
+#q{flex:1;min-width:0;font:inherit;font-size:16px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+#q:focus{outline:2px solid var(--accent);outline-offset:1px}
+.tog{font:inherit;font-size:.8rem;font-weight:500;white-space:nowrap;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.tog[aria-pressed="true"]{background:var(--kunyit-soft);border-color:var(--kunyit);color:var(--kunyit)}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{font:inherit;font-size:.8rem;white-space:nowrap;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.chip:focus-visible,.tog:focus-visible,.item:focus-visible,.star:focus-visible,.say:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.warn{font-size:.78rem;color:var(--kunyit);background:var(--kunyit-soft);border-radius:8px;padding:6px 10px}
+.count{font-size:.75rem;color:var(--muted);letter-spacing:.04em;margin-top:14px}
+h2{font-size:.75rem;letter-spacing:.12em;color:var(--kunyit);margin:22px 0 6px;font-weight:700;text-transform:uppercase}
+ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:1fr auto auto;gap:2px 10px;padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.w{font-weight:700;font-size:1.2rem;line-height:1.35;min-width:0}
+.k{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;min-width:0}
+.k b{font-family:var(--display);font-size:1.05rem;font-weight:600;color:var(--accent);letter-spacing:.01em}
+.k i{font-style:normal;font-size:.78rem;color:var(--muted)}
+.m{grid-column:1/2;font-size:.92rem;min-width:0}
+.quiz .m{color:transparent;background:var(--line);border-radius:4px;width:max-content;max-width:100%;user-select:none}
+.quiz .item.open .m{color:var(--ink);background:none}
+.say{grid-row:1/4;grid-column:2;align-self:center;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--accent);cursor:pointer;display:grid;place-items:center;padding:0}
+.say svg{width:20px;height:20px;fill:currentColor}
+.say.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.star{grid-row:1/4;grid-column:3;align-self:center;background:none;border:0;font-size:1.25rem;color:var(--line);cursor:pointer;padding:4px 6px;line-height:1}
+.star[aria-pressed="true"]{color:var(--accent)}
+.empty{color:var(--muted);padding:24px 0;text-align:center}
+.note{margin-top:28px;font-size:.78rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.item{transition:background .15s}.item:hover{background:var(--accent-soft)}}
+</style>
+</head><body>
+
+<div class="wrap">
+<header>
+  <h1>Kosakata Jepang <span>にほんご</span></h1>
+  <p>Kata, cara baca, dan arti. Tekan 🔊 untuk mendengar, ★ untuk menyimpan, "Sembunyikan arti" untuk latihan hafalan.</p>
+</header>
+<div class="bar">
+  <div class="row">
+    <input id="q" type="search" placeholder="Cari (Jepang / Indonesia / romaji)" autocomplete="off">
+    <button class="tog" id="slow" aria-pressed="false">Pelan</button>
+    <button class="tog" id="quiz" aria-pressed="false">Sembunyikan arti</button>
+  </div>
+  <div class="warn" id="warn" hidden></div>
+  <div class="chips" id="chips"></div>
+</div>
+<div class="count" id="count"></div>
+<div id="list"></div>
+<p class="note">Tips pengucapan: vokal panjang (ou, uu, ii, aa) dibaca dua kali lebih panjang — "obasan" (tante) beda dengan "obaasan" (nenek). Huruf kecil っ artinya berhenti sebentar (kitte = kit-te). Huruf r Jepang berada di antara r dan l, tidak digetarkan. Partikel は dibaca "wa" dan を dibaca "o".</p>
+</div>
+
+<script>
+// [Jepang, cara baca (kana, kosong jika sama), romaji, arti]
+const D={
+"Salam & dasar":[
+["おはようございます","","ohayou gozaimasu","Selamat pagi"],
+["こんにちは","","konnichiwa","Selamat siang / Halo"],
+["こんばんは","","konbanwa","Selamat malam"],
+["おやすみなさい","","oyasumi nasai","Selamat tidur"],
+["ありがとうございます","","arigatou gozaimasu","Terima kasih"],
+["どういたしまして","","dou itashimashite","Sama-sama"],
+["すみません","","sumimasen","Permisi / Maaf"],
+["ごめんなさい","","gomen nasai","Maaf (minta maaf)"],
+["大丈夫です","だいじょうぶです","daijoubu desu","Tidak apa-apa / Baik-baik saja"],
+["はい","","hai","Ya"],
+["いいえ","","iie","Tidak"],
+["お願いします","おねがいします","onegai shimasu","Tolong / Mohon"],
+["どうぞ","","douzo","Silakan"],
+["いただきます","","itadakimasu","Salam sebelum makan"],
+["ごちそうさまでした","","gochisousama deshita","Salam setelah makan (terima kasih atas makanannya)"],
+["いってきます","","ittekimasu","Saya berangkat"],
+["いってらっしゃい","","itterasshai","Hati-hati di jalan (untuk yang berangkat)"],
+["ただいま","","tadaima","Saya pulang"],
+["おかえりなさい","","okaeri nasai","Selamat datang kembali"],
+["お疲れ様です","おつかれさまです","otsukaresama desu","Salam di tempat kerja (terima kasih atas kerja kerasnya)"],
+["はじめまして","","hajimemashite","Senang berkenalan (pertama kali bertemu)"],
+["よろしくお願いします","よろしくおねがいします","yoroshiku onegai shimasu","Mohon bantuannya / Salam kenal"],
+["さようなら","","sayounara","Selamat tinggal"],
+["またね","","mata ne","Sampai jumpa"],
+["わかりました","","wakarimashita","Saya mengerti"],
+["わかりません","","wakarimasen","Saya tidak mengerti"],
+["もう一度お願いします","もういちど おねがいします","mou ichido onegai shimasu","Tolong sekali lagi"],
+["ゆっくり話してください","ゆっくり はなしてください","yukkuri hanashite kudasai","Tolong bicara pelan-pelan"]
+],
+"Orang":[
+["私","わたし","watashi","saya"],["あなた","","anata","Anda"],["彼","かれ","kare","dia (laki-laki) / pacar laki-laki"],
+["彼女","かのじょ","kanojo","dia (perempuan) / pacar perempuan"],["友達","ともだち","tomodachi","teman"],["家族","かぞく","kazoku","keluarga"],
+["父","ちち","chichi","ayah (saya)"],["母","はは","haha","ibu (saya)"],["子ども","こども","kodomo","anak"],
+["夫","おっと","otto","suami"],["妻","つま","tsuma","istri"],["先輩","せんぱい","senpai","senior"],
+["社長","しゃちょう","shachou","direktur / bos"],["〜さん","","~san","Bapak / Ibu / Mas / Mbak (panggilan sopan)"]
+],
+"Kata tanya":[
+["何","なに","nani","apa"],["誰","だれ","dare","siapa"],["どこ","","doko","di mana"],["いつ","","itsu","kapan"],
+["どうして","","doushite","kenapa"],["どうやって","","douyatte","bagaimana caranya"],["いくら","","ikura","berapa (harga)"],
+["いくつ","","ikutsu","berapa (jumlah)"],["どれ","","dore","yang mana"]
+],
+"Angka":[
+["ゼロ","","zero","0"],["一","いち","ichi","1"],["二","に","ni","2"],["三","さん","san","3"],["四","よん","yon","4"],
+["五","ご","go","5"],["六","ろく","roku","6"],["七","なな","nana","7"],["八","はち","hachi","8"],["九","きゅう","kyuu","9"],
+["十","じゅう","juu","10"],["百","ひゃく","hyaku","100"],["千","せん","sen","1.000"],["一万","いちまん","ichiman","10.000"]
+],
+"Waktu":[
+["今日","きょう","kyou","hari ini"],["明日","あした","ashita","besok"],["昨日","きのう","kinou","kemarin"],["今","いま","ima","sekarang"],
+["あとで","","ato de","nanti"],["朝","あさ","asa","pagi"],["昼","ひる","hiru","siang"],["夜","よる","yoru","malam"],
+["毎日","まいにち","mainichi","setiap hari"],["〜時","〜じ","~ji","jam ~"],["〜分","〜ふん","~fun","~ menit"],
+["週末","しゅうまつ","shuumatsu","akhir pekan"],["休み","やすみ","yasumi","libur / istirahat"],["何時ですか","なんじですか","nanji desu ka","Jam berapa?"],
+["月曜日","げつようび","getsuyoubi","Senin"],["火曜日","かようび","kayoubi","Selasa"],["水曜日","すいようび","suiyoubi","Rabu"],
+["木曜日","もくようび","mokuyoubi","Kamis"],["金曜日","きんようび","kin'youbi","Jumat"],["土曜日","どようび","doyoubi","Sabtu"],["日曜日","にちようび","nichiyoubi","Minggu"]
+],
+"Makanan":[
+["食べる","たべる","taberu","makan"],["飲む","のむ","nomu","minum"],["水","みず","mizu","air"],["ご飯","ごはん","gohan","nasi / makanan"],
+["パン","","pan","roti"],["肉","にく","niku","daging"],["鶏肉","とりにく","toriniku","daging ayam"],["豚肉","ぶたにく","butaniku","daging babi"],
+["牛肉","ぎゅうにく","gyuuniku","daging sapi"],["魚","さかな","sakana","ikan"],["野菜","やさい","yasai","sayur"],["卵","たまご","tamago","telur"],
+["果物","くだもの","kudamono","buah"],["お茶","おちゃ","ocha","teh"],["コーヒー","","koohii","kopi"],["お酒","おさけ","osake","minuman beralkohol"],
+["辛い","からい","karai","pedas"],["甘い","あまい","amai","manis"],["おいしい","","oishii","enak"],
+["お腹がすいた","おなかがすいた","onaka ga suita","lapar"],["のどがかわいた","","nodo ga kawaita","haus"],
+["お弁当","おべんとう","obentou","bekal / nasi kotak"],["コンビニ","","konbini","minimarket"]
+],
+"Belanja":[
+["いくらですか","","ikura desu ka","Berapa harganya?"],["高い","たかい","takai","mahal / tinggi"],["安い","やすい","yasui","murah"],
+["お金","おかね","okane","uang"],["現金","げんきん","genkin","tunai"],["カード","","kaado","kartu"],["レシート","","reshiito","struk"],
+["袋","ふくろ","fukuro","kantong"],["買う","かう","kau","membeli"],["店","みせ","mise","toko"],["これ","","kore","ini"],
+["それ","","sore","itu (dekat lawan bicara)"],["あれ","","are","itu (jauh)"],["ください","","kudasai","minta / tolong berikan"]
+],
+"Tempat & transportasi":[
+["駅","えき","eki","stasiun"],["電車","でんしゃ","densha","kereta"],["バス","","basu","bus"],["車","くるま","kuruma","mobil"],
+["自転車","じてんしゃ","jitensha","sepeda"],["道","みち","michi","jalan"],["右","みぎ","migi","kanan"],["左","ひだり","hidari","kiri"],
+["まっすぐ","","massugu","lurus"],["近い","ちかい","chikai","dekat"],["遠い","とおい","tooi","jauh"],["ここ","","koko","di sini"],
+["そこ","","soko","di situ"],["あそこ","","asoko","di sana"],["家","いえ","ie","rumah"],["会社","かいしゃ","kaisha","kantor / perusahaan"],
+["トイレ","","toire","toilet"],["病院","びょういん","byouin","rumah sakit"],["薬局","やっきょく","yakkyoku","apotek"],["銀行","ぎんこう","ginkou","bank"],
+["郵便局","ゆうびんきょく","yuubinkyoku","kantor pos"],["市役所","しやくしょ","shiyakusho","kantor wali kota"],
+["行く","いく","iku","pergi"],["来る","くる","kuru","datang"],["帰る","かえる","kaeru","pulang"]
+],
+"Tempat kerja":[
+["仕事","しごと","shigoto","pekerjaan"],["現場","げんば","genba","lokasi kerja / proyek"],["安全","あんぜん","anzen","keselamatan"],
+["危ない!","あぶない","abunai","Bahaya! Awas!"],["気をつけて","きをつけて","ki wo tsukete","hati-hati"],["ヘルメット","","herumetto","helm"],
+["手袋","てぶくろ","tebukuro","sarung tangan"],["道具","どうぐ","dougu","alat"],["休憩","きゅうけい","kyuukei","istirahat"],
+["始めます","はじめます","hajimemasu","kita mulai"],["終わりです","おわりです","owari desu","selesai"],["片付け","かたづけ","katazuke","beres-beres"],
+["急いで","いそいで","isoide","cepat / buru-buru"],["ゆっくり","","yukkuri","pelan-pelan"],["ちょっと待って","ちょっとまって","chotto matte","tunggu sebentar"],
+["手伝ってください","てつだってください","tetsudatte kudasai","tolong bantu"],["持ってきて","もってきて","motte kite","tolong bawakan"],
+["ここに置いて","ここにおいて","koko ni oite","taruh di sini"],["報告","ほうこく","houkoku","laporan"],["遅刻","ちこく","chikoku","terlambat"],
+["早退","そうたい","soutai","pulang lebih awal"],["残業","ざんぎょう","zangyou","lembur"],["給料","きゅうりょう","kyuuryou","gaji"]
+],
+"Kata kerja":[
+["する","","suru","melakukan"],["見る","みる","miru","melihat"],["聞く","きく","kiku","mendengar / bertanya"],["話す","はなす","hanasu","berbicara"],
+["読む","よむ","yomu","membaca"],["書く","かく","kaku","menulis"],["寝る","ねる","neru","tidur"],["起きる","おきる","okiru","bangun"],
+["働く","はたらく","hataraku","bekerja"],["勉強する","べんきょうする","benkyou suru","belajar"],["分かる","わかる","wakaru","mengerti"],
+["知る","しる","shiru","tahu"],["待つ","まつ","matsu","menunggu"],["使う","つかう","tsukau","memakai"],["作る","つくる","tsukuru","membuat"],
+["洗う","あらう","arau","mencuci"],["開ける","あける","akeru","membuka"],["閉める","しめる","shimeru","menutup"],
+["好き","すき","suki","suka"],["嫌い","きらい","kirai","tidak suka"],["できる","","dekiru","bisa"],["ほしい","","hoshii","ingin (barang)"]
+],
+"Kata sifat":[
+["大きい","おおきい","ookii","besar"],["小さい","ちいさい","chiisai","kecil"],["新しい","あたらしい","atarashii","baru"],["古い","ふるい","furui","lama / tua"],
+["暑い","あつい","atsui","panas (cuaca)"],["寒い","さむい","samui","dingin (cuaca)"],["冷たい","つめたい","tsumetai","dingin (benda)"],
+["いい","","ii","bagus / baik"],["悪い","わるい","warui","buruk"],["きれい","","kirei","cantik / bersih"],["楽しい","たのしい","tanoshii","menyenangkan"],
+["うれしい","","ureshii","senang"],["悲しい","かなしい","kanashii","sedih"],["疲れた","つかれた","tsukareta","capek"],["忙しい","いそがしい","isogashii","sibuk"],
+["簡単","かんたん","kantan","mudah"],["難しい","むずかしい","muzukashii","sulit"],["多い","おおい","ooi","banyak"],["少ない","すくない","sukunai","sedikit"],
+["大切","たいせつ","taisetsu","penting"]
+],
+"Kesehatan & darurat":[
+["痛い","いたい","itai","sakit (nyeri)"],["頭が痛い","あたまがいたい","atama ga itai","sakit kepala"],["お腹が痛い","おなかがいたい","onaka ga itai","sakit perut"],
+["熱","ねつ","netsu","demam"],["薬","くすり","kusuri","obat"],["医者","いしゃ","isha","dokter"],["救急車","きゅうきゅうしゃ","kyuukyuusha","ambulans"],
+["警察","けいさつ","keisatsu","polisi"],["助けて!","たすけて","tasukete","Tolong!"],["火事","かじ","kaji","kebakaran"],["地震","じしん","jishin","gempa bumi"],
+["119番","ひゃくじゅうきゅうばん","hyaku juu kyuu ban","119 (ambulans / pemadam kebakaran)"],["110番","ひゃくとおばん","hyaku too ban","110 (polisi)"],
+["なくしました","","nakushimashita","hilang (saya kehilangan)"]
+],
+"Kata lain":[
+["とても","","totemo","sangat"],["少し","すこし","sukoshi","sedikit"],["もっと","","motto","lebih"],["また","","mata","lagi"],
+["でも","","demo","tapi"],["そして","","soshite","lalu / dan"],["たぶん","","tabun","mungkin"],["本当","ほんとう","hontou","benar / sungguh"],
+["すごい!","","sugoi","Hebat!"],["大丈夫","だいじょうぶ","daijoubu","tidak apa-apa / oke"]
+],
+"Pujian & perasaan":[
+["かわいい","","kawaii","imut / lucu"],["かっこいい","","kakkoii","keren / ganteng"],["すてき","","suteki","indah / keren (elegan)"],
+["優しい","やさしい","yasashii","baik hati / lembut"],["面白い","おもしろい","omoshiroi","lucu / menarik"],["頭がいい","あたまがいい","atama ga ii","pintar"],
+["上手","じょうず","jouzu","pandai / mahir"],["下手","へた","heta","tidak pandai"],["大好き","だいすき","daisuki","sangat suka"],
+["寂しい","さびしい","sabishii","kesepian"],["会いたい","あいたい","aitai","kangen / ingin bertemu"],["怒る","おこる","okoru","marah"],
+["怖い","こわい","kowai","takut / seram"],["恥ずかしい","はずかしい","hazukashii","malu"],["びっくりした","","bikkuri shita","kaget"],
+["心配","しんぱい","shinpai","khawatir"],["つまらない","","tsumaranai","membosankan"],["幸せ","しあわせ","shiawase","bahagia"],
+["最高","さいこう","saikou","terbaik / mantap"],["安心","あんしん","anshin","lega / tenang"]
+],
+"Bahasa santai":[
+["すごく","","sugoku","sangat (santai)"],["めっちゃ","","meccha","banget (bahasa gaul)"],["マジ","","maji","serius / beneran"],
+["やばい","","yabai","gawat / keren banget (tergantung situasi)"],["うん","","un","iya (santai)"],["ううん","","uun","nggak (santai)"],
+["いいよ","","ii yo","boleh / oke"],["だめ","","dame","tidak boleh"],["ちょっと","","chotto","sedikit / sebentar / menolak halus"],
+["なんで","","nande","kenapa (santai)"],["そうだね","","sou da ne","iya ya / betul"],["そうなんだ","","sou nan da","oh, begitu"],
+["ほんと?","","honto?","beneran?"],["うそ!","","uso!","masa sih! / bohong!"],["よかった","","yokatta","syukurlah"],
+["ありがとう","","arigatou","makasih (santai)"],["ごめん","","gomen","maaf (santai)"],["じゃあね","","jaa ne","dah, sampai nanti"],
+["おつかれ","","otsukare","capek ya / makasih (santai antar teman)"],["笑","わら","wara / www","wkwk (tertawa di chat)"]
+],
+"Cuaca & alam":[
+["天気","てんき","tenki","cuaca"],["雨","あめ","ame","hujan"],["晴れ","はれ","hare","cerah"],["曇り","くもり","kumori","mendung"],
+["雪","ゆき","yuki","salju"],["風","かぜ","kaze","angin"],["台風","たいふう","taifuu","topan"],["太陽","たいよう","taiyou","matahari"],
+["星","ほし","hoshi","bintang"],["空","そら","sora","langit"],["海","うみ","umi","laut"],["山","やま","yama","gunung"],
+["川","かわ","kawa","sungai"],["木","き","ki","pohon"],["花","はな","hana","bunga"],["桜","さくら","sakura","bunga sakura"],
+["春","はる","haru","musim semi"],["夏","なつ","natsu","musim panas"],["秋","あき","aki","musim gugur"],["冬","ふゆ","fuyu","musim dingin"]
+],
+"Tubuh":[
+["体","からだ","karada","badan"],["頭","あたま","atama","kepala"],["顔","かお","kao","wajah"],["目","め","me","mata"],
+["耳","みみ","mimi","telinga"],["鼻","はな","hana","hidung"],["口","くち","kuchi","mulut"],["歯","は","ha","gigi"],
+["髪","かみ","kami","rambut"],["手","て","te","tangan"],["指","ゆび","yubi","jari"],["足","あし","ashi","kaki"],
+["お腹","おなか","onaka","perut"],["背中","せなか","senaka","punggung"],["腰","こし","koshi","pinggang"]
+],
+"Warna":[
+["色","いろ","iro","warna"],["赤","あか","aka","merah"],["白","しろ","shiro","putih"],["黒","くろ","kuro","hitam"],
+["青","あお","ao","biru"],["緑","みどり","midori","hijau"],["黄色","きいろ","kiiro","kuning"],["茶色","ちゃいろ","chairo","coklat"],
+["ピンク","","pinku","pink"],["灰色","はいいろ","haiiro","abu-abu"]
+],
+"Rumah & barang":[
+["部屋","へや","heya","kamar"],["ベッド","","beddo","tempat tidur"],["布団","ふとん","futon","kasur lipat Jepang"],["ドア","","doa","pintu"],
+["窓","まど","mado","jendela"],["机","つくえ","tsukue","meja"],["椅子","いす","isu","kursi"],["電気","でんき","denki","lampu / listrik"],
+["エアコン","","eakon","AC"],["鍵","かぎ","kagi","kunci"],["服","ふく","fuku","baju"],["ズボン","","zubon","celana"],
+["靴","くつ","kutsu","sepatu"],["タオル","","taoru","handuk"],["石けん","せっけん","sekken","sabun"],["スマホ","","sumaho","HP / smartphone"],
+["充電","じゅうでん","juuden","ngecas"],["ゴミ","ごみ","gomi","sampah"],["ゴミの日","ごみのひ","gomi no hi","hari buang sampah (penting di Jepang)"],
+["洗濯","せんたく","sentaku","mencuci baju"],["冷蔵庫","れいぞうこ","reizouko","kulkas"],["お風呂","おふろ","ofuro","bak mandi / berendam"]
+],
+"Hewan":[
+["動物","どうぶつ","doubutsu","hewan"],["猫","ねこ","neko","kucing"],["犬","いぬ","inu","anjing"],["鳥","とり","tori","burung"],
+["馬","うま","uma","kuda"],["猿","さる","saru","monyet"],["蛇","へび","hebi","ular"],["熊","くま","kuma","beruang"],
+["うさぎ","","usagi","kelinci"],["蚊","か","ka","nyamuk"],["虫","むし","mushi","serangga"],["ゴキブリ","","gokiburi","kecoak"]
+],
+"Kata kerja (tambahan)":[
+["座る","すわる","suwaru","duduk"],["立つ","たつ","tatsu","berdiri"],["入る","はいる","hairu","masuk"],["出る","でる","deru","keluar"],
+["乗る","のる","noru","naik (kendaraan)"],["降りる","おりる","oriru","turun"],["遊ぶ","あそぶ","asobu","bermain"],["会う","あう","au","bertemu"],
+["送る","おくる","okuru","mengirim"],["電話する","でんわする","denwa suru","menelepon"],["覚える","おぼえる","oboeru","menghafal / mengingat"],
+["忘れる","わすれる","wasureru","lupa"],["始める","はじめる","hajimeru","memulai"],["終わる","おわる","owaru","selesai"],
+["取る","とる","toru","mengambil"],["あげる","","ageru","memberi"],["もらう","","morau","menerima"],["借りる","かりる","kariru","meminjam"],
+["誘う","さそう","sasou","mengajak"],["教える","おしえる","oshieru","mengajar / memberi tahu"],["休む","やすむ","yasumu","istirahat / libur"],
+["運ぶ","はこぶ","hakobu","membawa / mengangkut"]
+],
+"Makanan (tambahan)":[
+["牛乳","ぎゅうにゅう","gyuunyuu","susu"],["ジュース","","juusu","jus"],["ラーメン","","raamen","ramen"],["寿司","すし","sushi","sushi"],
+["カレー","","karee","kari"],["おにぎり","","onigiri","nasi kepal"],["豆腐","とうふ","toufu","tahu"],["しょっぱい","","shoppai","asin"],
+["すっぱい","","suppai","asam"],["苦い","にがい","nigai","pahit"],["ハラール","","haraaru","halal"],["アルコール","","arukooru","alkohol"],
+["箸","はし","hashi","sumpit"],["スプーン","","supuun","sendok"],["フォーク","","fooku","garpu"],["お皿","おさら","osara","piring"],["コップ","","koppu","gelas"]
+],
+"Waktu (tambahan)":[
+["あさって","","asatte","lusa"],["来週","らいしゅう","raishuu","minggu depan"],["先週","せんしゅう","senshuu","minggu lalu"],
+["来月","らいげつ","raigetsu","bulan depan"],["去年","きょねん","kyonen","tahun lalu"],["いつも","","itsumo","selalu"],
+["よく","","yoku","sering"],["ときどき","","tokidoki","kadang-kadang"],["あまり〜ない","","amari ~ nai","jarang / tidak terlalu"],["すぐ","","sugu","segera"]
+],
+"Tempat kerja (tambahan)":[
+["上司","じょうし","joushi","atasan"],["会議","かいぎ","kaigi","rapat"],["朝礼","ちょうれい","chourei","apel pagi"],
+["持ち上げる","もちあげる","mochiageru","mengangkat"],["引く","ひく","hiku","menarik"],["押す","おす","osu","mendorong"],
+["取り付ける","とりつける","toritsukeru","memasang"],["掃除","そうじ","souji","bersih-bersih"],["材料","ざいりょう","zairyou","bahan"],
+["機械","きかい","kikai","mesin"],["足場","あしば","ashiba","perancah (scaffolding)"],["安全帯","あんぜんたい","anzentai","sabuk pengaman"],
+["立入禁止","たちいりきんし","tachiiri kinshi","dilarang masuk"]
+],
+"Kalimat: perkenalan":[
+["私の名前は〜です","わたしの なまえは 〜です","watashi no namae wa ~ desu","Nama saya ~"],
+["インドネシアから来ました","インドネシアから きました","indoneshia kara kimashita","Saya datang dari Indonesia"],
+["日本語を勉強しています","にほんごを べんきょうしています","nihongo wo benkyou shite imasu","Saya sedang belajar bahasa Jepang"],
+["日本語が少しわかります","にほんごが すこし わかります","nihongo ga sukoshi wakarimasu","Saya sedikit mengerti bahasa Jepang"],
+["趣味は何ですか","しゅみは なんですか","shumi wa nan desu ka","Apa hobi Anda?"],
+["何歳ですか","なんさいですか","nansai desu ka","Umur berapa?"]
+],
+"Kalimat: makan":[
+["これは何ですか","これは なんですか","kore wa nan desu ka","Ini apa?"],
+["豚肉は入っていますか","ぶたにくは はいっていますか","butaniku wa haitte imasu ka","Apakah ini ada daging babinya?"],
+["豚肉は食べられません","ぶたにくは たべられません","butaniku wa taberaremasen","Saya tidak bisa makan daging babi"],
+["お酒は飲みません","おさけは のみません","osake wa nomimasen","Saya tidak minum alkohol"],
+["これをください","","kore wo kudasai","Saya mau ini"],
+["お水をください","おみずを ください","omizu wo kudasai","Minta air"],
+["とてもおいしいです","","totemo oishii desu","Enak sekali"],
+["お会計お願いします","おかいけい おねがいします","okaikei onegai shimasu","Minta bon"],
+["一緒に食べましょう","いっしょに たべましょう","issho ni tabemashou","Ayo makan bersama"]
+],
+"Kalimat: belanja & jalan":[
+["これはいくらですか","","kore wa ikura desu ka","Ini berapa harganya?"],
+["袋はいりません","ふくろは いりません","fukuro wa irimasen","Tidak perlu kantong"],
+["カードで払えますか","カードで はらえますか","kaado de haraemasu ka","Bisa bayar pakai kartu?"],
+["〜はどこにありますか","〜は どこに ありますか","~ wa doko ni arimasu ka","~ ada di mana?"],
+["駅はどこですか","えきは どこですか","eki wa doko desu ka","Stasiun di mana?"],
+["トイレはどこですか","","toire wa doko desu ka","Toilet di mana?"],
+["この電車は〜に行きますか","この でんしゃは 〜に いきますか","kono densha wa ~ ni ikimasu ka","Apakah kereta ini ke ~?"],
+["ここで降ります","ここで おります","koko de orimasu","Saya turun di sini"],
+["道に迷いました","みちに まよいました","michi ni mayoimashita","Saya tersesat"]
+],
+"Kalimat: tempat kerja":[
+["今日もよろしくお願いします","きょうも よろしく おねがいします","kyou mo yoroshiku onegai shimasu","Mohon kerja samanya hari ini"],
+["これはどうやりますか","","kore wa dou yarimasu ka","Ini bagaimana caranya?"],
+["もう一度教えてください","もういちど おしえてください","mou ichido oshiete kudasai","Tolong ajari sekali lagi"],
+["終わりました","おわりました","owarimashita","Sudah selesai"],
+["次は何をしますか","つぎは なにを しますか","tsugi wa nani wo shimasu ka","Selanjutnya saya kerjakan apa?"],
+["休憩しましょう","きゅうけい しましょう","kyuukei shimashou","Ayo istirahat"],
+["明日は何時に来ますか","あしたは なんじに きますか","ashita wa nanji ni kimasu ka","Besok datang jam berapa?"],
+["遅れてすみません","おくれて すみません","okurete sumimasen","Maaf saya terlambat"],
+["お先に失礼します","おさきに しつれいします","osaki ni shitsurei shimasu","Saya pulang duluan (sopan)"],
+["お疲れ様でした","おつかれさまでした","otsukaresama deshita","Terima kasih atas kerja kerasnya hari ini"]
+],
+"Kalimat: sehari-hari":[
+["元気ですか","げんきですか","genki desu ka","Apa kabar?"],
+["元気です","げんきです","genki desu","Baik"],
+["今日は暑いですね","きょうは あついですね","kyou wa atsui desu ne","Hari ini panas, ya"],
+["週末は何をしますか","しゅうまつは なにを しますか","shuumatsu wa nani wo shimasu ka","Akhir pekan mau ngapain?"],
+["また明日","またあした","mata ashita","Sampai besok"],
+["気をつけて帰ってね","きをつけて かえってね","ki wo tsukete kaette ne","Hati-hati di jalan pulang"]
+],
+"Kalimat: saat kesulitan":[
+["もう一度言ってください","もういちど いってください","mou ichido itte kudasai","Tolong ulangi sekali lagi"],
+["〜は日本語で何と言いますか","〜は にほんごで なんと いいますか","~ wa nihongo de nan to iimasu ka","Apa bahasa Jepangnya ~?"],
+["どういう意味ですか","どういう いみですか","dou iu imi desu ka","Apa artinya?"],
+["体の調子が悪いです","からだの ちょうしが わるいです","karada no choushi ga warui desu","Saya merasa tidak enak badan"],
+["病院に行きたいです","びょういんに いきたいです","byouin ni ikitai desu","Saya ingin ke rumah sakit"],
+["財布をなくしました","さいふを なくしました","saifu wo nakushimashita","Dompet saya hilang"],
+["救急車を呼んでください","きゅうきゅうしゃを よんでください","kyuukyuusha wo yonde kudasai","Tolong panggil ambulans"]
+],
+"Kalimat: memuji & perasaan":[
+["すごくかわいい!","","sugoku kawaii!","Imut banget!"],
+["めっちゃかわいい!","","meccha kawaii!","Lucu banget! (gaul)"],
+["とてもきれいですね","","totemo kirei desu ne","Cantik sekali, ya"],
+["かっこいいですね","","kakkoii desu ne","Keren / ganteng, ya"],
+["その服、いいですね","そのふく、いいですね","sono fuku, ii desu ne","Bajunya bagus"],
+["笑顔がすてきですね","えがおが すてきですね","egao ga suteki desu ne","Senyummu manis"],
+["優しいですね","やさしいですね","yasashii desu ne","Baik sekali, ya"],
+["日本語が上手ですね","にほんごが じょうずですね","nihongo ga jouzu desu ne","Bahasa Jepangmu bagus!"],
+["すごいですね","","sugoi desu ne","Hebat, ya"],
+["最高!","さいこう","saikou!","Mantap!"],
+["楽しかったです","たのしかったです","tanoshikatta desu","Tadi seru sekali"],
+["とてもうれしいです","","totemo ureshii desu","Saya senang sekali"],
+["これ、大好きです","これ、だいすきです","kore, daisuki desu","Saya suka banget ini"],
+["会いたいです","あいたいです","aitai desu","Saya kangen"],
+["びっくりしました","","bikkuri shimashita","Saya kaget"],
+["悲しまないで","かなしまないで","kanashimanaide","Jangan sedih"],
+["怒らないでね","おこらないでね","okoranaide ne","Jangan marah, ya"],
+["ごめんね、私が悪かった","ごめんね、わたしが わるかった","gomen ne, watashi ga warukatta","Maaf ya, aku yang salah"],
+["頑張って!","がんばって","ganbatte!","Semangat!"],
+["頑張ります!","がんばります","ganbarimasu!","Saya akan berusaha!"],
+["きっとできるよ","","kitto dekiru yo","Kamu pasti bisa"],
+["誕生日おめでとう!","たんじょうび おめでとう","tanjoubi omedetou!","Selamat ulang tahun!"],
+["おめでとうございます","","omedetou gozaimasu","Selamat!"],
+["来てくれてありがとう","きてくれて ありがとう","kite kurete arigatou","Terima kasih sudah datang"],
+["いつもありがとう","","itsumo arigatou","Terima kasih selalu"],
+["助かりました","たすかりました","tasukarimashita","Terima kasih, sangat membantu"]
+],
+"Kalimat: ngobrol santai":[
+["今、何してる?","いま、なにしてる","ima, nani shiteru?","Lagi apa?"],
+["のんびりしてるよ","","nonbiri shiteru yo","Lagi santai aja"],
+["ご飯食べた?","ごはん たべた","gohan tabeta?","Udah makan belum?"],
+["元気?","げんき","genki?","Gimana kabarnya?"],
+["元気だよ","げんきだよ","genki da yo","Baik-baik aja"],
+["どこに住んでるの?","どこに すんでるの","doko ni sunderu no?","Tinggal di mana?"],
+["サッカーが好き","サッカーが すき","sakkaa ga suki","Saya suka sepak bola"],
+["日本の料理、好き?","にほんの りょうり、すき","nihon no ryouri, suki?","Suka makanan Jepang?"],
+["インドネシアに行ったことある?","インドネシアに いったこと ある","indoneshia ni itta koto aru?","Pernah ke Indonesia?"],
+["まだないです","","mada nai desu","Belum pernah"],
+["いつか遊びに行きたい","いつか あそびに いきたい","itsuka asobi ni ikitai","Kapan-kapan aku ingin main ke sana"],
+["一緒に出かけよう!","いっしょに でかけよう","issho ni dekakeyou!","Yuk, jalan-jalan bareng!"],
+["明日、ひま?","あした、ひま","ashita, hima?","Besok ada waktu luang?"],
+["うん、ひまだよ","","un, hima da yo","Iya, kosong kok"],
+["一緒に写真撮ってもいい?","いっしょに しゃしん とっても いい","issho ni shashin tottemo ii?","Boleh foto bareng?"],
+["写真撮ろう!","しゃしん とろう","shashin torou!","Ayo foto!"],
+["LINE交換しよう","ライン こうかん しよう","rain koukan shiyou","Tukeran LINE, yuk (aplikasi chat populer di Jepang)"],
+["あとで連絡するね","あとで れんらくするね","ato de renraku suru ne","Nanti aku kabari"],
+["マジで?","","maji de?","Seriusan?"],
+["ほんとに?","","honto ni?","Beneran?"],
+["うそでしょ?","","uso desho?","Masa sih?"],
+["気にしないで","きにしないで","ki ni shinaide","Santai aja, jangan dipikirin"],
+["任せるよ","まかせるよ","makaseru yo","Terserah kamu"],
+["私も!","わたしも","watashi mo!","Aku juga!"],
+["それな!","","sore na!","Bener banget! (gaul)"],
+["疲れたでしょ?","つかれたでしょ","tsukareta desho?","Capek, ya?"],
+["ちゃんとご飯食べてね","ちゃんと ごはん たべてね","chanto gohan tabete ne","Jangan lupa makan, ya"],
+["おやすみ、いい夢を","おやすみ、いいゆめを","oyasumi, ii yume wo","Selamat tidur, mimpi indah"],
+["また会おうね!","また あおうね","mata aou ne!","Sampai ketemu lagi!"]
+],
+"Kalimat: di lapangan":[
+["ヘルメットをかぶってね","","herumetto wo kabutte ne","Pakai helm, ya"],
+["危ない、気をつけて!","あぶない、きをつけて","abunai, ki wo tsukete!","Awas, bahaya!"],
+["これを持ち上げて","これを もちあげて","kore wo mochiagete","Tolong angkat ini"],
+["それを取って","それを とって","sore wo totte","Tolong ambilkan itu"],
+["ゆっくりでいいよ","","yukkuri de ii yo","Pelan-pelan saja"],
+["もう終わった?","もう おわった","mou owatta?","Sudah selesai belum?"],
+["もうすぐです","","mou sugu desu","Sebentar lagi"],
+["いい仕事だね!","いい しごとだね","ii shigoto da ne!","Kerja bagus!"],
+["始めましょう","はじめましょう","hajimemashou","Ayo mulai"],
+["今日はここまで","きょうは ここまで","kyou wa koko made","Hari ini sampai di sini"],
+["明日は8時からです","あしたは はちじからです","ashita wa hachiji kara desu","Besok mulai jam 8"],
+["質問はありますか","しつもんは ありますか","shitsumon wa arimasu ka","Ada pertanyaan?"],
+["分からなかったら聞いてね","わからなかったら きいてね","wakaranakattara kiite ne","Kalau tidak tahu, tanya saja"],
+["水分をしっかり取ってね","すいぶんを しっかり とってね","suibun wo shikkari totte ne","Minum air yang cukup, ya"],
+["ここは立入禁止です","ここは たちいりきんしです","koko wa tachiiri kinshi desu","Di sini dilarang masuk"]
+]
+};
+const FAV="★ Favorit",EX="Semua kalimat",ALL="Semua";
+let favs=new Set();try{favs=new Set(JSON.parse(localStorage.getItem("jp-favs")||"[]"))}catch(e){}
+const saveFav=()=>{try{localStorage.setItem("jp-favs",JSON.stringify([...favs]))}catch(e){}};
+const cats=[ALL,FAV,EX,...Object.keys(D)];let cur=ALL;
+const chips=document.getElementById("chips"),list=document.getElementById("list"),q=document.getElementById("q"),cnt=document.getElementById("count");
+const total=Object.values(D).reduce((a,b)=>a+b.length,0);
+cats.forEach(c=>{const b=document.createElement("button");b.className="chip";b.textContent=c;b.setAttribute("aria-pressed",c===cur);
+ b.onclick=()=>{cur=c;[...chips.children].forEach(x=>x.setAttribute("aria-pressed",x===b));render()};chips.appendChild(b)});
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON='<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+function render(){
+ const t=q.value.trim().toLowerCase();let n=0,html="";
+ for(const [c,arr] of Object.entries(D)){
+  if(cur===EX){if(!c.startsWith("Kalimat"))continue}
+  else if(cur!==ALL&&cur!==FAV&&cur!==c)continue;
+  const rows=arr.filter(r=>(cur!==FAV||favs.has(r[0]))&&(!t||r.join(" ").toLowerCase().includes(t)));
+  if(!rows.length)continue;n+=rows.length;
+  html+=`<h2>${esc(c)}</h2><ul>`+rows.map(r=>`<li class="item" tabindex="0"><span class="w">${esc(r[0])}</span><span class="k"><b>${esc(r[2])}</b>${r[1]?`<i>${esc(r[1])}</i>`:""}</span><span class="m">${esc(r[3])}</span><button class="say" data-say="${esc(r[0])}" aria-label="Putar ${esc(r[2])}">${ICON}</button><button class="star" data-w="${esc(r[0])}" aria-label="Favorit" aria-pressed="${favs.has(r[0])}">★</button></li>`).join("")+`</ul>`;
+ }
+ list.innerHTML=html||`<p class="empty">${cur===FAV?"Tekan ★ untuk menyimpan kata di sini":"Tidak ditemukan"}</p>`;
+ cnt.textContent=`${n} / ${total} kata & kalimat`;
+}
+const warn=document.getElementById("warn"),slowB=document.getElementById("slow");
+const synth=window.speechSynthesis;let jaVoice=null;
+function pickVoice(){if(!synth)return;const v=synth.getVoices();jaVoice=v.find(x=>/^ja([-_]|$)/i.test(x.lang))||v.find(x=>/japan/i.test(x.name))||null}
+if(synth){pickVoice();synth.onvoiceschanged=pickVoice}
+slowB.onclick=()=>slowB.setAttribute("aria-pressed",slowB.getAttribute("aria-pressed")!=="true");
+function speak(text,btn){
+ if(!synth){warn.textContent="Browser ini tidak mendukung suara. Buka dengan Chrome atau Safari.";warn.hidden=false;return}
+ pickVoice();synth.cancel();
+ const u=new SpeechSynthesisUtterance(text.replace(/〜/g,"").replace(/!/g,""));
+ u.lang="ja-JP";if(jaVoice)u.voice=jaVoice;
+ u.rate=slowB.getAttribute("aria-pressed")==="true"?0.55:0.9;
+ document.querySelectorAll(".say.on").forEach(x=>x.classList.remove("on"));btn.classList.add("on");
+ u.onend=u.onerror=()=>btn.classList.remove("on");
+ synth.speak(u);
+ if(!jaVoice&&synth.getVoices().length){warn.textContent="Suara bahasa Jepang belum terpasang di perangkat ini. Tambahkan suara \"Bahasa Jepang\" di pengaturan Text-to-Speech agar pengucapannya benar.";warn.hidden=false}
+}
+list.addEventListener("click",e=>{
+ const sp=e.target.closest(".say");if(sp){speak(sp.dataset.say,sp);return}
+ const s=e.target.closest(".star");
+ if(s){const w=s.dataset.w;favs.has(w)?favs.delete(w):favs.add(w);saveFav();s.setAttribute("aria-pressed",favs.has(w));if(cur===FAV)render();return}
+ const it=e.target.closest(".item");if(it)it.classList.toggle("open");
+});
+list.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.classList.contains("item"))e.target.classList.toggle("open")});
+q.addEventListener("input",render);
+const qb=document.getElementById("quiz");
+qb.onclick=()=>{const on=qb.getAttribute("aria-pressed")!=="true";qb.setAttribute("aria-pressed",on);list.classList.toggle("quiz",on);document.querySelectorAll(".item.open").forEach(x=>x.classList.remove("open"))};
+render();
+</script>
+</body></html>
